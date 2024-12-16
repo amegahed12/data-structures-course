@@ -1,16 +1,3 @@
-/*
-    --- For the playPrevious and playNext functions, if you try to go to the prev
-        of head or the next of tail, you will get an erorr
-
-    --- We need to add a feature to let the user open an already made playlists
-        and picks what he likes and adds them to his own playlist
-
-
-
-
-
-*/
-
 #include <iostream>
 #include <string>
 
@@ -170,7 +157,11 @@ struct Playlist
         {
             // Change the current playing to be the previous
             playing = playing->prev;
-            cout << "playing " << playing->title << " by " << playing->artist;
+
+            if (playing)
+                cout << "playing " << playing->title << " by " << playing->artist;
+            else
+                cout << "No prev song to play";
         }
         else
         {
@@ -187,7 +178,12 @@ struct Playlist
         {
             // Change the current playing to be the after
             playing = playing->next;
-            cout << "playing " << playing->title << " by " << playing->artist;
+
+            // check if we are in the end or not
+            if (playing)
+                cout << "playing " << playing->title << " by " << playing->artist;
+            else
+                cout << "No next song to play";
         }
         else
             cout << "No song playing!";
@@ -212,6 +208,29 @@ struct Playlist
         {
             cout << current->title << " by " << current->artist << '\n';
             current = current->next;
+        }
+    }
+
+    void playReverse()
+    {
+
+        // if song is empty
+        if (!tail)
+        {
+            cout << "The playlist is empty.\n";
+            return;
+        }
+
+        // Start from the last song
+        Song *current = tail;
+
+        cout << "Playing songs from the end to the start:\n";
+
+        // Play from last finish
+        while (current)
+        {
+            cout << "Playing: " << current->title << " by " << current->artist << '\n';
+            current = current->prev; // Go to the song before
         }
     }
 };
@@ -249,7 +268,8 @@ int main()
         cout << "5. Play Previous Song\n";
         cout << "6. Play Next Song\n";
         cout << "7. Display Playlist\n";
-        cout << "8. Exit\n";
+        cout << "8. Play Songs in Reverse Order\n";
+        cout << "9. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
 
@@ -294,6 +314,10 @@ int main()
             playlist.displayPlaylist();
             break;
         case '8':
+            // Play in reverse order
+            playlist.playReverse();
+            break;
+        case '9':
             // Stop
             cout << "Exiting the program.\n";
             break;
